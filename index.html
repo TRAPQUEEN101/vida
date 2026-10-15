@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IndieVault - Streaming</title>
+    <meta name="description" content="IndieVault is an independent movie streaming platform.">
+    <meta name="keywords" content="indie movies, independent film streaming, watch indie films online, indievault">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#0b0f19] text-gray-100 min-h-screen font-sans">
+
+    <!-- Header -->
+    <header class="border-b border-gray-800 bg-[#0f172a]/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <h1 class="text-xl font-black tracking-wider text-indigo-400">INDIE<span class="text-white">VAULT</span></h1>
+            <span id="movie-count" class="text-sm text-gray-400">0 movies available</span>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <section class="space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-2xl font-bold tracking-tight">Stream Movies</h2>
+            </div>
+            
+            <div id="movie-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            
+            <div id="empty-state" class="hidden text-center py-20 border border-dashed border-gray-800 rounded-2xl">
+                <p class="text-gray-400">No video files found in the videos/ folder yet.</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // LIST YOUR MOVIES HERE: Add video files placed inside the 'videos' folder
+        const movies = [
+            // Example:
+            // { title: "My Movie", videoUrl: "videos/movie.mp4" }
+        ];
+
+        function renderMovies() {
+            const grid = document.getElementById('movie-grid');
+            const emptyState = document.getElementById('empty-state');
+            const countEl = document.getElementById('movie-count');
+
+            countEl.innerText = `${movies.length} movies available`;
+
+            if (movies.length === 0) {
+                grid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            grid.innerHTML = movies.map((m) => `
+                <div class="bg-[#111827] border border-gray-800 rounded-xl overflow-hidden flex flex-col shadow-lg">
+                    <div class="aspect-video bg-black relative">
+                        <video controls preload="metadata" class="w-full h-full object-cover" src="${m.videoUrl}"></video>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <h3 class="font-bold text-lg truncate" title="${m.title}">${m.title}</h3>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        renderMovies();
+    </script>
+</body>
+</html>
